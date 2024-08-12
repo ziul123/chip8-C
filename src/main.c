@@ -103,8 +103,11 @@ void run() {
 		step();
 }
 
-void load_mem(const char *file) {
+//return 0 on success
+int load_mem(const char *file) {
 	printf("Loading file <%s>...\n", file);
+
+	//load fontset
 	uint8_t fontset[80] =
 	{
 		0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -125,6 +128,33 @@ void load_mem(const char *file) {
 		0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 	};
 	memcpy(mem + FONTSET_START, fontset, 80);
+
+	//get file size
+	FILE *fd = fopen(file, "rb");
+	if (!fd) {
+		perror("Error opening file");
+		return 1;
+	}
+
+	fseek(fd, 0, SEEK_END);
+	int f_size = ftell(fd);
+	rewind(fd);
+
+	if (f_size > MAX_PROGRAM_SIZE) {
+		fprintf(stderr, "File is too large.\n");
+		return 1;
+	}
+
+	//load file
+	fread(mem + PROGRAM_START, 1, f_size, fd);
+	if (ferror(fd)) {
+		perror("Error reading file");
+		return 1;
+	}
+
+	fclose(fd);
+	printf("File <%s> loaded succesfully!\n", file);
+	return 0;
 }
 
 int main(int argc, char **argv) {
@@ -133,6 +163,7 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
-	load_mem(argv[1]);
+	if(load_mem(argv[1]))
+		return 1;
 	return 0;
 }

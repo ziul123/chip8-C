@@ -17,6 +17,8 @@ extern int8_t mem[4096];
 
 #define PROGRAM_START 0x200
 
+#define MAX_PROGRAM_SIZE 3232	//0xE9F - 0x200 + 1
+
 extern uint16_t stack[16];
 
 //Instruction Sections
