@@ -26,13 +26,19 @@ void execute() {
 		case 0x0:
 			if (N) {
 				//RET
+				PC = stack[--SP];
 			} else {
 				//CLS
 			}
 			break;
 		case 0x1:
+			//JUMP
+			PC = NNN;
 			break;
 		case 0x2:
+			//CALL
+			stack[SP++] = PC;
+			PC = NNN;
 			break;
 		case 0x3:
 			break;
