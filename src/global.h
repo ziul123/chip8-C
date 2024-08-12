@@ -21,6 +21,12 @@ extern int8_t mem[4096];
 
 extern uint16_t stack[16];
 
+extern uint8_t screen[2048];
+
+#define SCREEN_WIDTH 64
+
+#define SCREEN_HEIGHT 32
+
 //Instruction Sections
 
 extern uint16_t INST, NNN;

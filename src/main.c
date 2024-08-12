@@ -1,11 +1,17 @@
-#include "global.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <unistd.h>
+
+#include "global.h"
+#include "graphics.h"
+
+#include "SDL2/SDL.h"
 
 int8_t V[16] = { 0 };
 int8_t mem[4096] = { 0 };
 uint16_t stack[16] = { 0 };
+uint8_t screen[2048] = { 0 };
 uint16_t I = 0, PC = 0, INST = 0, NNN = 0;
 uint8_t SP = 0, DT = 0, ST = 0;
 int8_t FN = 0, NN = 0, N = 0, X = 0, Y = 0;
@@ -165,5 +171,16 @@ int main(int argc, char **argv) {
 
 	if(load_mem(argv[1]))
 		return 1;
+
+	init_window();
+
+
+	while (1) {
+		if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
+			break;
+	}
+
+	destroy_window();
+
 	return 0;
 }

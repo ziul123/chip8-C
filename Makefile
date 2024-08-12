@@ -1,5 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -g3
+CLIBS = -lSDL2
 
 SRC_DIR = src
 OBJ_DIR = obj
@@ -17,7 +18,7 @@ setup:
 	mkdir -p $(BIN_DIR) $(OBJ_DIR)
 
 chip8: $(OBJ_FILES)
-	$(CC) $(CFLAGS) $^ -o $(BIN_DIR)/$@
+	$(CC) $(CFLAGS) $^ -o $(BIN_DIR)/$@ $(CLIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c -MMD -MP $< -o $@
