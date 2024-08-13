@@ -38,26 +38,40 @@ void execute() {
 				PC = stack[--SP];
 			} else {
 				//CLS
+				memset(screen, 0, 2048);
 			}
 			break;
 		case 0x1:
-			//JUMP
+			//JUMP NNN
 			PC = NNN;
 			break;
 		case 0x2:
-			//CALL
+			//CALL NNN
 			stack[SP++] = PC;
 			PC = NNN;
 			break;
 		case 0x3:
+			//SE VX, NN
+			if (V[X] == NN)
+				PC += 2;
 			break;
 		case 0x4:
+			//SNE VX, NN
+			if (V[X] != NN)
+				PC += 2;
 			break;
 		case 0x5:
+			//SE VX, VY
+			if (V[X] == V[Y])
+				PC += 2;
 			break;
 		case 0x6:
+			//LD VX, NN
+			V[X] = NN;
 			break;
 		case 0x7:
+			//ADD VX, NN
+			V[X] += NN;
 			break;
 		case 0x8:
 			switch (N) {
@@ -174,7 +188,7 @@ int main(int argc, char **argv) {
 
 	init_window();
 
-
+	SDL_Event event;
 	while (1) {
 		if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
 			break;
